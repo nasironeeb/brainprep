@@ -35,8 +35,8 @@ def execute_command(command):
     proc = subprocess.Popen(
         command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     output, error = proc.communicate()
-    print(f"this is output {output.decode("utf8")}")
-    print(f"this is error {error.decode("utf8")}")
+    print(f"this is output {output.decode('utf8')}")
+    print(f"this is error {error.decode('utf8')}")
     if proc.returncode != 0:
         raise ValueError(
             "\nCommand {0} failed:\n\n- output:\n{1}\n\n- error: "
