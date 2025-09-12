@@ -64,6 +64,7 @@ def plot_images(nii_files, cut_coords, outdir):
                 snapdir, "sub-{}_ses-{}_run-{}_snaps.png".format(
                     participant_id, session, run))
             plt.savefig(snap_path)
+            plt.close(fig)
             snaps.append(snap_path)
             bar.update(cnt)
     return snaps, snapdir
