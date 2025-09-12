@@ -230,7 +230,7 @@ def get_bids_keys(filename):
     return keys
 
 
-def load_images(img_files, check_same_referential=True):
+def load_images(img_files, batch_size=None, check_same_referential=True):
     """ Load a list of images in a BIDS organisation: check that all images
     are in the same referential.
 
@@ -238,6 +238,8 @@ def load_images(img_files, check_same_referential=True):
     ----------
     img_files: list of str (n_subjects, )
         path to images.
+    batch_size: int, default None
+        number of images to load by batch
 
     Returns
     -------
@@ -247,30 +249,60 @@ def load_images(img_files, check_same_referential=True):
         description of the array with columns 'participant_id',
         'session', 'run', 'ni_path'.
     """
-    ref_affine = None
-    ref_shape = None
-    data = []
-    info = {}
-    for path in img_files:
-        keys = get_bids_keys(path)
-        participant_id = keys["participant_id"]
-        session = keys.get("session", "V1")
-        run = keys.get("run", "1")
-        img = nibabel.load(path)
-        if ref_affine is None:
-            ref_affine = img.affine
-            ref_shape = img.shape
-        else:
-            assert np.allclose(ref_affine, img.affine), "Different affine."
-            assert ref_shape == img.shape, "Different shape."
-        data.append(np.expand_dims(img.get_fdata(), axis=0))
-        info.setdefault("participant_id", []).append(participant_id)
-        info.setdefault("session", []).append(session)
-        info.setdefault("run", []).append(run)
-        info.setdefault("ni_path", []).append(path)
-    df = pd.DataFrame.from_dict(info)
-    imgs_arr = np.asarray(data)
-    return imgs_arr, df
+    if batch_size is None:
+        ref_affine = None
+        ref_shape = None
+        data = []
+        info = {}
+        for path in img_files:
+            keys = get_bids_keys(path)
+            participant_id = keys["participant_id"]
+            session = keys.get("session", "V1")
+            run = keys.get("run", "1")
+            img = nibabel.load(path)
+            if ref_affine is None:
+                ref_affine = img.affine
+                ref_shape = img.shape
+            else:
+                assert np.allclose(ref_affine, img.affine), "Different affine."
+                assert ref_shape == img.shape, "Different shape."
+            data.append(np.expand_dims(img.get_fdata(), axis=0))
+            info.setdefault("participant_id", []).append(participant_id)
+            info.setdefault("session", []).append(session)
+            info.setdefault("run", []).append(run)
+            info.setdefault("ni_path", []).append(path)
+        df = pd.DataFrame.from_dict(info)
+        imgs_arr = np.asarray(data)
+        return imgs_arr, df
+    else:
+        ref_affine = None
+        ref_shape = None
+        batch_data = []
+        batch_info = {}
+        for i, path in enumerate(img_files):
+            keys = get_bids_keys(path)
+            participant_id = keys["participant_id"]
+            session = keys.get("session", "V1")
+            run = keys.get("run", "1")
+            img = nibabel.load(path)
+            if ref_affine is None:
+                ref_affine = img.affine
+                ref_shape = img.shape
+            else:
+                assert np.allclose(ref_affine, img.affine), "Different affine."
+                assert ref_shape == img.shape, "Different shape."
+            batch_data.append(np.expand_dims(img.get_fdata(), axis=0))
+            batch_info.setdefault("participant_id", []).append(participant_id)
+            batch_info.setdefault("session", []).append(session)
+            batch_info.setdefault("run", []).append(run)
+            batch_info.setdefault("ni_path", []).append(path)
+            #stop when the batch_size is full or at the end of the list
+            if (i + 1) % batch_size == 0 or (i + 1) == len(img_files):
+                imgs_arr = np.asarray(batch_data)
+                df = pd.DataFrame.from_dict(batch_info)
+                yield imgs_arr, df
+                batch_data = []
+                batch_info = {}
 
 
 def create_clickable(path_or_url):
