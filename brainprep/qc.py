@@ -20,6 +20,7 @@ import pandas as pd
 from pprint import pprint
 import xml.etree.ElementTree as ET
 from sklearn.decomposition import PCA
+from scipy.stats import pearsonr
 import matplotlib.pyplot as plt
 import seaborn as sns
 from .utils import get_bids_keys
@@ -90,7 +91,7 @@ def plot_pca(X, df_description, outdir):
     return pca_path
 
 
-def compute_mean_correlation(X, df_description, outdir):
+def compute_mean_correlation(X, df_description, outdir, batch_number=None, plot_batch=False):
     """ Compute mean correlation.
 
     Parameters
@@ -102,6 +103,12 @@ def compute_mean_correlation(X, df_description, outdir):
         'participant_id', 'session', 'run' and 'ni_path' columns.
     outdir: str
         the destination folder.
+    batch_number: int, default None
+        if not None, the number of batches to use to compute the correlation
+        matrix. This is useful when the number of samples is too high to fit
+        in memory.
+    plot_batch: bool, default False
+        if True, plot the correlation matrix for each batch.
 
     Returns
     -------
@@ -123,39 +130,77 @@ def compute_mean_correlation(X, df_description, outdir):
     X = X.reshape(len(X), -1)
     X[np.isnan(X)] = 0
     X[np.isinf(X)] = 0
-    corr = np.corrcoef(X, dtype=np.single)
+    if batch_number is None:
+        corr = np.corrcoef(X, dtype=np.single)
 
-    # Compute the Z-transformation of the correlation
-    den = 1. - corr
-    den[den == 0] = 1e-8
-    zcorr = 0.5 * np.log((1. + corr) / den)
-    zcorr[np.isnan(zcorr)] = 0
-    zcorr[np.isinf(zcorr)] = 0
-    zcorr_mean = (zcorr.sum(axis=1) - 1) / (len(zcorr) - 1)
+        # Compute the Z-transformation of the correlation
+        den = 1. - corr
+        den[den == 0] = 1e-8
+        zcorr = 0.5 * np.log((1. + corr) / den)
+        zcorr[np.isnan(zcorr)] = 0
+        zcorr[np.isinf(zcorr)] = 0
+        zcorr_mean = (zcorr.sum(axis=1) - 1) / (len(zcorr) - 1)
 
-    # Get the index sorted by descending Z-corrected mean correlation values
-    sort_idx = np.argsort(zcorr_mean)
-    participant_ids = df_description["participant_id"][sort_idx]
-    sessions_ids = df_description["session"][sort_idx]
-    run_ids = df_description["run"][sort_idx]
-    corr_reorder = corr[np.ix_(sort_idx, sort_idx)]
+        # Get the index sorted by descending Z-corrected mean correlation values
+        sort_idx = np.argsort(zcorr_mean)
+        participant_ids = df_description["participant_id"][sort_idx]
+        sessions_ids = df_description["session"][sort_idx]
+        run_ids = df_description["run"][sort_idx]
+        corr_reorder = corr[np.ix_(sort_idx, sort_idx)]
 
-    # Plot heatmap of mean correlation
-    plt.subplots(figsize=(10, 10))
-    cmap = sns.color_palette("RdBu_r", 110)
-    sns.heatmap(corr_reorder, mask=None, cmap=cmap, vmin=-1, vmax=1, center=0)
-    corr_path = os.path.join(outdir, "correlation.png")
-    plt.savefig(corr_path)
+        # Plot heatmap of mean correlation
+        plt.subplots(figsize=(10, 10))
+        cmap = sns.color_palette("RdBu_r", 110)
+        sns.heatmap(corr_reorder, mask=None, cmap=cmap, vmin=-1, vmax=1, center=0)
+        corr_path = os.path.join(outdir, "correlation.png")
+        plt.savefig(corr_path)
 
-    # Generate data frame with results
-    df_corr = pd.DataFrame(dict(participant_id=participant_ids,
-                                session=sessions_ids,
-                                run=run_ids,
-                                corr_mean=zcorr_mean[sort_idx]))
-    df_corr = df_corr.reindex(
-        ["participant_id", "session", "run", "corr_mean"], axis="columns")
+        # Generate data frame with results
+        df_corr = pd.DataFrame(dict(participant_id=participant_ids,
+                                    session=sessions_ids,
+                                    run=run_ids,
+                                    corr_mean=zcorr_mean[sort_idx]))
+        df_corr = df_corr.reindex(
+            ["participant_id", "session", "run", "corr_mean"], axis="columns")
 
-    return df_corr, corr_path
+        return df_corr, corr_path
+    elif batch_number is int:
+        n_samples = X.shape[0]
+        # Compute mean correlation per image incrementally
+        mean_corr = np.zeros(n_samples, dtype=np.float32)
+        counts = np.zeros(n_samples, dtype=np.int32)
+        for i in range(n_samples):
+            for j in range(i+1, n_samples):
+                r, _ = pearsonr(X[i], X[j])
+                if not np.isnan(r):
+                    mean_corr[i] += r
+                    mean_corr[j] += r
+                    counts[i] += 1
+                    counts[j] += 1
+        mean_corr /= np.maximum(counts, 1)
+        # Sort by correlation
+        sort_idx = np.argsort(mean_corr)
+        participant_ids = df_description["participant_id"].values[sort_idx]
+        sessions_ids = df_description["session"].values[sort_idx]
+        run_ids = df_description["run"].values[sort_idx]
+        # Prepare results dataframe
+        df_corr = pd.DataFrame(dict(
+            participant_id=participant_ids,
+            session=sessions_ids,
+            run=run_ids,
+            corr_mean=mean_corr[sort_idx]
+        ))
+        corr_path = None
+        if plot_batch == True and batch_number is not None:
+            corr_subset = np.corrcoef(X, rowvar=True)
+            plt.subplots(figsize=(10, 10))
+            cmap = sns.color_palette("RdBu_r", 110)
+            sns.heatmap(corr_subset, mask=None, cmap=cmap, vmin=-1, vmax=1, center=0)
+            corr_path = os.path.join(outdir, f"correlation_subset{batch_number}.png")
+            plt.savefig(corr_path)
+            plt.close()
+
+        return df_corr, corr_path
 
 
 def parse_fsreconall_stats(fs_dirs):
