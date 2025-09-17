@@ -16,8 +16,12 @@ import os
 import glob
 import nibabel
 import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
 from html import unescape
 import brainprep
+from sklearn.decomposition import IncrementalPCA
+from scipy.stats import pearsonr
 from brainprep.utils import load_images, create_clickable, listify
 from brainprep.color_utils import print_title, print_result
 from brainprep.qc import plot_pca, compute_mean_correlation, check_files
@@ -90,8 +94,9 @@ def brainprep_quasiraw(anatomical, mask, outdir, target=None, no_bids=False):
     np.save(npy_mat, nii_arr)
 
 
-def brainprep_quasiraw_qc(img_regex, outdir, brainmask_regex=None,
-                          extra_img_regex=None, corr_thr=0.5):
+def brainprep_quasiraw_qc(img_regex, outdir, batch_size=None,
+                          brainmask_regex=None, extra_img_regex=None, 
+                          corr_thr=0.5):
     """ Define the quasi-raw quality control workflow.
 
     Parameters
@@ -100,6 +105,8 @@ def brainprep_quasiraw_qc(img_regex, outdir, brainmask_regex=None,
         regex to the quasi raw image files for all subjects.
     outdir: str
         the destination folder.
+    batch_size: int, default None
+        number of images to load by batch. If None, load all images at once.
     brainmask_regex: str, default None
         regex to the brain mask files for all subjects. If one file is
         provided, we assume subjects are in the same referential.
@@ -128,73 +135,230 @@ def brainprep_quasiraw_qc(img_regex, outdir, brainmask_regex=None,
         check_files([img_files, brainmask_files])
     if len(extra_img_files) > 0:
         check_files([img_files] + extra_img_files)
+    if batch_size is None:
+        print_title("Load images...")
+        imgs_arr, df = load_images(img_files)
+        imgs_arr = imgs_arr.squeeze()
+        imgs_size = list(imgs_arr.shape)[1:]
+        if len(brainmask_files) == 1:
+            mask_img = nibabel.load(brainmask_files[0])
+            mask_glob = (mask_img.get_fdata() > 0)
+        elif len(brainmask_files) > 1:
+            if len(brainmask_files) != len(imgs_arr):
+                raise ValueError("The list of images and masks must have the same "
+                                "length.")
+            masks_arr = [nibabel.load(path).get_fdata() > 0
+                        for path in brainmask_files]
+            mask_glob = masks_arr[0]
+            for arr in masks_arr[1:]:
+                mask_glob = np.logical_and(mask_glob, arr)
+        else:
+            mask_glob = np.ones(imgs_size).astype(bool)
+        imgs_arr = imgs_arr[:, mask_glob]
+        print(df)
+        print("  flat masked images:", imgs_arr.shape)
 
-    print_title("Load images...")
-    imgs_arr, df = load_images(img_files)
-    imgs_arr = imgs_arr.squeeze()
-    imgs_size = list(imgs_arr.shape)[1:]
-    if len(brainmask_files) == 1:
-        mask_img = nibabel.load(brainmask_files[0])
-        mask_glob = (mask_img.get_fdata() > 0)
-    elif len(brainmask_files) > 1:
-        if len(brainmask_files) != len(imgs_arr):
-            raise ValueError("The list of images and masks must have the same "
-                             "length.")
-        masks_arr = [nibabel.load(path).get_fdata() > 0
-                     for path in brainmask_files]
-        mask_glob = masks_arr[0]
-        for arr in masks_arr[1:]:
-            mask_glob = np.logical_and(mask_glob, arr)
-    else:
-        mask_glob = np.ones(imgs_size).astype(bool)
-    imgs_arr = imgs_arr[:, mask_glob]
-    print(df)
-    print("  flat masked images:", imgs_arr.shape)
+        print_title("Compute PCA analysis...")
+        pca_path = plot_pca(imgs_arr, df, outdir)
+        print_result(pca_path)
 
-    print_title("Compute PCA analysis...")
-    pca_path = plot_pca(imgs_arr, df, outdir)
-    print_result(pca_path)
+        print_title("Compute correlation comparision...")
+        df_corr, corr_path = compute_mean_correlation(imgs_arr, df, outdir)
+        print_result(corr_path)
 
-    print_title("Compute correlation comparision...")
-    df_corr, corr_path = compute_mean_correlation(imgs_arr, df, outdir)
-    print_result(corr_path)
+        print_title("Save quality control scores...")
+        df_qc = df_corr
+        df_qc["qc"] = (df_qc["corr_mean"] > corr_thr).astype(int)
+        qc_path = os.path.join(outdir, "qc.tsv")
+        df_qc.sort_values(by=["corr_mean"], inplace=True)
+        df_qc.to_csv(qc_path, index=False, sep="\t")
+        print(df_qc)
+        print_result(qc_path)
 
-    print_title("Save quality control scores...")
-    df_qc = df_corr
-    df_qc["qc"] = (df_qc["corr_mean"] > corr_thr).astype(int)
-    qc_path = os.path.join(outdir, "qc.tsv")
-    df_qc.sort_values(by=["corr_mean"], inplace=True)
-    df_qc.to_csv(qc_path, index=False, sep="\t")
-    print(df_qc)
-    print_result(qc_path)
+        print_title("Save scores histograms...")
+        data = {"corr": {"data": df_qc["corr_mean"].values, "bar": corr_thr}}
+        snap = plot_hists(data, outdir)
+        print_result(snap)
 
-    print_title("Save scores histograms...")
-    data = {"corr": {"data": df_qc["corr_mean"].values, "bar": corr_thr}}
-    snap = plot_hists(data, outdir)
-    print_result(snap)
+        print_title("Save brain images ordered by mean correlation...")
+        sorted_indices = [
+            df.index[(df.participant_id == row.participant_id) &
+                    (df.session == row.session) &
+                    (df.run == row.run)].item()
+            for _, row in df_qc.iterrows()]
+        img_files_cat = (
+            [np.asarray(img_files)[sorted_indices]] +
+            [np.asarray(item)[sorted_indices] for item in extra_img_files])
+        img_files_cat = [item for item in zip(*img_files_cat)]
+        cut_coords = [(1, 1, 1)] * (len(extra_img_files) + 1)
+        snaps, snapdir = plot_images(img_files_cat, cut_coords, outdir)
+        df_report = df_qc.copy()
+        df_report["snap_path"] = snaps
+        df_report["snap_path"] = df_report["snap_path"].apply(
+            create_clickable)
+        print_result(snapdir)
 
-    print_title("Save brain images ordered by mean correlation...")
-    sorted_indices = [
-        df.index[(df.participant_id == row.participant_id) &
-                 (df.session == row.session) &
-                 (df.run == row.run)].item()
-        for _, row in df_qc.iterrows()]
-    img_files_cat = (
-        [np.asarray(img_files)[sorted_indices]] +
-        [np.asarray(item)[sorted_indices] for item in extra_img_files])
-    img_files_cat = [item for item in zip(*img_files_cat)]
-    cut_coords = [(1, 1, 1)] * (len(extra_img_files) + 1)
-    snaps, snapdir = plot_images(img_files_cat, cut_coords, outdir)
-    df_report = df_qc.copy()
-    df_report["snap_path"] = snaps
-    df_report["snap_path"] = df_report["snap_path"].apply(
-        create_clickable)
-    print_result(snapdir)
+        print_title("Save quality check ordered by mean correlation...")
+        report_path = os.path.join(outdir, "qc.html")
+        html_report = df_report.to_html(index=False, table_id="table-brainprep")
+        html_report = unescape(html_report)
+        with open(report_path, "wt") as of:
+            of.write(html_report)
+        print_result(report_path)
+    if batch_size is not None:
+        print_title("Compute Incremental PCA...")
+        ipca = IncrementalPCA(n_components=2)
+        print_title("Load images by batch...")
+        # first loop
+        for imgs_arr, df in load_images(img_files, batch_size=batch_size):
+            if imgs_arr.shape[0] == 1 and imgs_arr.shape[1] == 1:
+                imgs_arr = imgs_arr[:, 0, ...]
+            else:
+                imgs_arr = imgs_arr.squeeze()
+            imgs_size = list(imgs_arr.shape)[1:]
+            if len(brainmask_files) == 1:
+                mask_img = nibabel.load(brainmask_files[0])
+                mask_glob = (mask_img.get_fdata() > 0)
+            elif len(brainmask_files) > 1:
+                if len(brainmask_files) != len(imgs_arr):
+                    raise ValueError("The list of images and masks must have the same"
+                                    "length.")
+                masks_arr = [nibabel.load(path).get_fdata() > 0
+                            for path in brainmask_files]
+                mask_glob = masks_arr[0]
+                for arr in masks_arr[1:]:
+                    mask_glob = np.logical_and(mask_glob, arr)
+            else:
+                mask_glob = np.ones(imgs_size).astype(bool)
+            imgs_arr = imgs_arr[:, mask_glob]
+            if len(imgs_arr) != len(df):
+                raise ValueError("'X' and 'df_description' must have the same length.")
+            if "participant_id" not in df.columns:
+                raise ValueError("'df_description' must contains a 'participant_id' "
+                                "column.")
+            imgs_arr = imgs_arr.reshape(len(imgs_arr), -1)
+            imgs_arr[np.isnan(imgs_arr)] = 0
+            ipca.partial_fit(imgs_arr)
+        print_result("Incremental PCA fitting is done ...")
+        all_proj = []
+        dfs = []
+        # second loop
+        for i, (imgs_arr, df) in enumerate(load_images(img_files, batch_size=batch_size)):
+            if imgs_arr.shape[0] == 1 and imgs_arr.shape[1] == 1:
+                imgs_arr = imgs_arr[:, 0, ...]
+            else:
+                imgs_arr = imgs_arr.squeeze()
+            imgs_size = list(imgs_arr.shape)[1:]
+            if len(brainmask_files) == 1:
+                mask_img = nibabel.load(brainmask_files[0])
+                mask_glob = (mask_img.get_fdata() > 0)
+            elif len(brainmask_files) > 1:
+                if len(brainmask_files) != len(imgs_arr):
+                    raise ValueError("The list of images and masks must have the same "
+                                    "length.")
+                masks_arr = [nibabel.load(path).get_fdata() > 0
+                            for path in brainmask_files]
+                mask_glob = masks_arr[0]
+                for arr in masks_arr[1:]:
+                    mask_glob = np.logical_and(mask_glob, arr)
+            else:
+                mask_glob = np.ones(imgs_size).astype(bool)
+            imgs_arr = imgs_arr[:, mask_glob]
+            if len(imgs_arr) != len(df):
+                raise ValueError("'X' and 'df_description' must have the same length.")
+            if "participant_id" not in df.columns:
+                raise ValueError("'df_description' must contains a 'participant_id' "
+                                "column.")
+            imgs_arr = imgs_arr.reshape(len(imgs_arr), -1)
+            imgs_arr[np.isnan(imgs_arr)] = 0
+            components = ipca.transform(imgs_arr)
+            # Plot
+            fig, ax = plt.subplots(figsize=(20, 30))
+            ax.scatter(components[:, 0], components[:, 1])
+            for idx, desc in enumerate(df["participant_id"]):
+                ax.annotate(desc, xy=(components[idx, 0], components[idx, 1]),
+                            xytext=(4, 4), textcoords="offset pixels")
+            plt.xlabel("PC1 (var=%.2f)" % ipca.explained_variance_ratio_[0])
+            plt.ylabel("PC2 (var=%.2f)" % ipca.explained_variance_ratio_[1])
+            plt.axis("equal")
+            ax.spines['right'].set_visible(False)
+            ax.spines['top'].set_visible(False)
+            plt.tight_layout()
+            all_proj.append(components)
+            dfs.append(df)
+            pca_path = os.path.join(outdir, f"pca_batch_{i+1}.pdf")
+            plt.savefig(pca_path)
+            plt.close()
+            print_result(pca_path)
+        
+        print_result("Incremental PCA fitting is done ...")
+        X_pca = np.vstack(all_proj)
+        df_all = pd.concat(dfs, ignore_index=True)
+        ## save the data with all path
+        df_all.to_csv(os.path.join(outdir, "df_all.csv"), index=False)
+        ##
+        fig, ax = plt.subplots(figsize=(20, 30))
+        ax.scatter(X_pca[:, 0], X_pca[:, 1])
+        for i, desc in enumerate(df_all["participant_id"]):
+            ax.annotate(desc, xy=(X_pca[i, 0], X_pca[i, 1]),
+                        xytext=(4, 4), textcoords="offset pixels")
+        plt.xlabel("PC1 (var=%.2f)" % ipca.explained_variance_ratio_[0])
+        plt.ylabel("PC2 (var=%.2f)" % ipca.explained_variance_ratio_[1])
+        plt.axis("equal")
+        ax.spines['right'].set_visible(False)
+        ax.spines['top'].set_visible(False)
+        plt.tight_layout()
+        pca_pdf = os.path.join(outdir, "incremental_pca.pdf")
+        plt.savefig(pca_pdf)
+        plt.close()
+        print_result(pca_pdf)
 
-    print_title("Save quality check ordered by mean correlation...")
-    report_path = os.path.join(outdir, "qc.html")
-    html_report = df_report.to_html(index=False, table_id="table-brainprep")
-    html_report = unescape(html_report)
-    with open(report_path, "wt") as of:
-        of.write(html_report)
-    print_result(report_path)
+        print_title("Compute correlation comparison...")
+        all_dfs = []
+        for i, (imgs_arr, df) in enumerate(load_images(img_files, batch_size=batch_size)):
+            if imgs_arr.shape[0] == 1 and imgs_arr.shape[1] == 1:
+                imgs_arr = imgs_arr[:, 0, ...]
+            else:
+                imgs_arr = imgs_arr.squeeze()
+            imgs_size = list(imgs_arr.shape)[1:]
+            imgs_arr = imgs_arr.reshape(len(imgs_arr), -1)
+            imgs_arr[np.isnan(imgs_arr)] = 0
+            df_corr, corr_path = compute_mean_correlation(imgs_arr, df, outdir,
+                                                          plot_batch=False, batch_number=i + 1)
+            # print_result(corr_path)
+            df_corr["batch"] = i + 1
+            all_dfs.append(df_corr)
+
+        df_final = pd.concat(all_dfs, ignore_index=True)
+        final_path = os.path.join(outdir, "df_corr_all_batches.csv")
+        df_final.to_csv(final_path, index=False)
+        print_result(final_path)
+        print_title("Save scores histograms...")
+        data = {"corr": {"data": df_qc["corr_mean"].values, "bar": corr_thr}}
+        snap = plot_hists(data, outdir)
+        print_result(snap)
+        print_title("Save brain images ordered by mean correlation...")
+        sorted_indices = [
+            df.index[(df.participant_id == row.participant_id) &
+                        (df.session == row.session) &
+                        (df.run == row.run)].item()
+            for _, row in df_qc.iterrows()]
+        print(sorted_indices)
+        img_files_cat = (
+            [np.asarray(img_files)[sorted_indices]] +
+            [np.asarray(item)[sorted_indices] for item in extra_img_files])
+        img_files_cat = [item for item in zip(*img_files_cat)]
+        cut_coords = [(1, 1, 1)] * (len(extra_img_files) + 1)
+        snaps, snapdir = plot_images(img_files_cat, cut_coords, outdir)
+        df_report = df_qc.copy()
+        df_report["snap_path"] = snaps
+        df_report["snap_path"] = df_report["snap_path"].apply(
+            create_clickable)
+        print_result(snapdir)
+        print_title("Save quality check ordered by mean correlation...")
+        report_path = os.path.join(outdir, "qc.html")
+        html_report = df_report.to_html(index=False, table_id="table-brainprep")
+        html_report = unescape(html_report)
+        with open(report_path, "wt") as of:
+            of.write(html_report)
+        print_result(report_path)

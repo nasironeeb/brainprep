@@ -8,7 +8,7 @@
 ##########################################################################
 
 """
-Package that provides tools for brain MRI Deep Leanring PreProcessing.
+Package that provides tools for brain MRI Deep Learning PreProcessing.
 """
 
 # Imports
