@@ -153,7 +153,7 @@ def plot_fsreconall(fs_dirs, outdir, include_cerebellum=False):
             anat_im = nibabel.load(anat_file)
             anat_arr = anat_im.get_fdata()
             gm_im = nibabel.Nifti1Image(
-                gm_mask.astype(int), affine=ribbon_im.affine)
+                gm_mask.astype(np.float32), affine=ribbon_im.affine)
             plotting.plot_roi(roi_img=gm_im, bg_img=anat_im, alpha=0.3,
                               figure=fig, axes=axs[0])
             palette = itertools.cycle(sns.color_palette("Set1"))
