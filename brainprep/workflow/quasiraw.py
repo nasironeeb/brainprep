@@ -334,24 +334,25 @@ def brainprep_quasiraw_qc(img_regex, outdir, batch_size=None,
         df_final.to_csv(final_path, index=False)
         print_result(final_path)
         print_title("Save scores histograms...")
-        data = {"corr": {"data": df_qc["corr_mean"].values, "bar": corr_thr}}
+        data = {"corr": {"data": df_final["corr_mean"].values, "bar": corr_thr}}
         snap = plot_hists(data, outdir)
         print_result(snap)
         print_title("Save brain images ordered by mean correlation...")
-        sorted_indices = [
-            df.index[(df.participant_id == row.participant_id) &
-                        (df.session == row.session) &
-                        (df.run == row.run)].item()
-            for _, row in df_qc.iterrows()]
-        print(sorted_indices)
+        df_merged = df_final.merge(df.reset_index(),
+                                   on=["participant_id", "session", "run"],
+                                   how="left", 
+                                   validate="one_to_one")
+        sorted_indices = df_merged["index"].dropna().astype(int).tolist()
         img_files_cat = (
             [np.asarray(img_files)[sorted_indices]] +
             [np.asarray(item)[sorted_indices] for item in extra_img_files])
         img_files_cat = [item for item in zip(*img_files_cat)]
         cut_coords = [(1, 1, 1)] * (len(extra_img_files) + 1)
         snaps, snapdir = plot_images(img_files_cat, cut_coords, outdir)
-        df_report = df_qc.copy()
-        df_report["snap_path"] = snaps
+        df_report = df_final.copy()
+        df_report["snap_path"] = None 
+        for idx, snap in zip(sorted_indices, snaps):
+            df_report.loc[idx, "snap_path"] = snap  
         df_report["snap_path"] = df_report["snap_path"].apply(
             create_clickable)
         print_result(snapdir)
