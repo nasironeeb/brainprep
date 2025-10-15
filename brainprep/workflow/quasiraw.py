@@ -331,6 +331,7 @@ def brainprep_quasiraw_qc(img_regex, outdir, batch_size=None,
 
         df_final = pd.concat(all_dfs, ignore_index=True)
         final_path = os.path.join(outdir, "df_corr_all_batches.csv")
+        df_final = df_final.sort_values(by=["corr_mean"], inplace=True)
         df_final.to_csv(final_path, index=False)
         print_result(final_path)
         print_title("Save scores histograms...")
