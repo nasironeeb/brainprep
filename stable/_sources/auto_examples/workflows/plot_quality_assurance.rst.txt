@@ -245,9 +245,9 @@ to actually run each step and generate results on disk.
           iqm_files: [PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/sub-01/ses-00/anat/sub-01_ses-00_T1w.json'), PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/sub-01/ses-00/func/sub-01_ses-00_task-ArchiStandard_dir-pa_bold.json'), PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/sub-01/ses-00/dwi/sub-01_ses-00_dwi.json')]
         )
         runtime: Bunch(
-          start: '2026-04-08 13:00:08.068028'
-          end: '2026-04-08 13:00:08.074576'
-          execution_time: 1.8188888888888889e-06
+          start: '2026-04-08 13:07:25.443507'
+          end: '2026-04-08 13:07:25.450678'
+          execution_time: 1.9919444444444443e-06
           brainprep_version: '2.0.0'
           platform: 'Linux-6.17.0-1008-azure-x86_64-with-glibc2.39'
           hostname: 'runnervm727z3'
@@ -277,9 +277,9 @@ to actually run each step and generate results on disk.
           outputs: (['mriqc', '/tmp/brainprep-data/rawdata', '/tmp/brainprep-qa/derivatives/quality_assurance', 'participant', '-w', '/tmp/brainprep-qa/derivatives/quality_assurance/sub-01/ses-00/workspace', '--no-sub', '--no-datalad-get', '--notrack', '--participant-label', '01'], ([PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/sub-01/ses-00/anat/sub-01_ses-00_T1w.json'), PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/sub-01/ses-00/func/sub-01_ses-00_task-ArchiStandard_dir-pa_bold.json'), PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/sub-01/ses-00/dwi/sub-01_ses-00_dwi.json')],))
         )
         runtime: Bunch(
-          start: '2026-04-08 13:00:08.072102'
-          end: '2026-04-08 13:00:08.072247'
-          execution_time: 4.0277777777777777e-08
+          start: '2026-04-08 13:07:25.448052'
+          end: '2026-04-08 13:07:25.448217'
+          execution_time: 4.5833333333333333e-08
           brainprep_version: '2.0.0'
           platform: 'Linux-6.17.0-1008-azure-x86_64-with-glibc2.39'
           hostname: 'runnervm727z3'
@@ -332,9 +332,9 @@ to actually run each step and generate results on disk.
           iqm_files: [PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/sub-02/ses-00/anat/sub-02_ses-00_T1w.json'), PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/sub-02/ses-00/func/sub-02_ses-00_task-ArchiStandard_dir-pa_bold.json'), PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/sub-02/ses-00/dwi/sub-02_ses-00_dwi.json')]
         )
         runtime: Bunch(
-          start: '2026-04-08 13:00:08.084933'
-          end: '2026-04-08 13:00:08.090579'
-          execution_time: 1.5683333333333333e-06
+          start: '2026-04-08 13:07:25.461492'
+          end: '2026-04-08 13:07:25.467205'
+          execution_time: 1.5869444444444444e-06
           brainprep_version: '2.0.0'
           platform: 'Linux-6.17.0-1008-azure-x86_64-with-glibc2.39'
           hostname: 'runnervm727z3'
@@ -364,9 +364,9 @@ to actually run each step and generate results on disk.
           outputs: (['mriqc', '/tmp/brainprep-data/rawdata', '/tmp/brainprep-qa/derivatives/quality_assurance', 'participant', '-w', '/tmp/brainprep-qa/derivatives/quality_assurance/sub-02/ses-00/workspace', '--no-sub', '--no-datalad-get', '--notrack', '--participant-label', '02'], ([PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/sub-02/ses-00/anat/sub-02_ses-00_T1w.json'), PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/sub-02/ses-00/func/sub-02_ses-00_task-ArchiStandard_dir-pa_bold.json'), PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/sub-02/ses-00/dwi/sub-02_ses-00_dwi.json')],))
         )
         runtime: Bunch(
-          start: '2026-04-08 13:00:08.088231'
-          end: '2026-04-08 13:00:08.088330'
-          execution_time: 2.7499999999999998e-08
+          start: '2026-04-08 13:07:25.464820'
+          end: '2026-04-08 13:07:25.464937'
+          execution_time: 3.25e-08
           brainprep_version: '2.0.0'
           platform: 'Linux-6.17.0-1008-azure-x86_64-with-glibc2.39'
           hostname: 'runnervm727z3'
@@ -414,9 +414,9 @@ to actually run each step and generate results on disk.
           iqm_files: [PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/group_T1w.tsv'), PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/group_bold.tsv'), PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/group_dwi.tsv')]
         )
         runtime: Bunch(
-          start: '2026-04-08 13:00:08.098855'
-          end: '2026-04-08 13:00:08.107709'
-          execution_time: 2.4594444444444445e-06
+          start: '2026-04-08 13:07:25.474382'
+          end: '2026-04-08 13:07:25.483224'
+          execution_time: 2.456111111111111e-06
           brainprep_version: '2.0.0'
           platform: 'Linux-6.17.0-1008-azure-x86_64-with-glibc2.39'
           hostname: 'runnervm727z3'
@@ -445,9 +445,9 @@ to actually run each step and generate results on disk.
           outputs: (['mriqc', '/tmp/brainprep-qa/rawdata', '/tmp/brainprep-qa/derivatives/quality_assurance', 'group', '--no-sub', '--no-datalad-get', '--notrack'], ([PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/group_T1w.tsv'), PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/group_bold.tsv'), PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/group_dwi.tsv')],))
         )
         runtime: Bunch(
-          start: '2026-04-08 13:00:08.101635'
-          end: '2026-04-08 13:00:08.101677'
-          execution_time: 1.1666666666666665e-08
+          start: '2026-04-08 13:07:25.477126'
+          end: '2026-04-08 13:07:25.477169'
+          execution_time: 1.1944444444444444e-08
           brainprep_version: '2.0.0'
           platform: 'Linux-6.17.0-1008-azure-x86_64-with-glibc2.39'
           hostname: 'runnervm727z3'
@@ -477,9 +477,9 @@ to actually run each step and generate results on disk.
           outputs: ([PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/group_T1w.tsv'), PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/group_bold.tsv'), PosixPath('/tmp/brainprep-qa/derivatives/quality_assurance/group_dwi.tsv')],)
         )
         runtime: Bunch(
-          start: '2026-04-08 13:00:08.106361'
-          end: '2026-04-08 13:00:08.106394'
-          execution_time: 9.166666666666668e-09
+          start: '2026-04-08 13:07:25.481794'
+          end: '2026-04-08 13:07:25.481825'
+          execution_time: 8.611111111111111e-09
           brainprep_version: '2.0.0'
           platform: 'Linux-6.17.0-1008-azure-x86_64-with-glibc2.39'
           hostname: 'runnervm727z3'
@@ -591,9 +591,9 @@ Hub: `Neurospin Docker Hub <https://hub.docker.com/u/neurospin>`_.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 17.278 seconds)
+   **Total running time of the script:** (0 minutes 11.031 seconds)
 
-**Estimated memory usage:**  559 MB
+**Estimated memory usage:**  404 MB
 
 
 .. _sphx_glr_download_auto_examples_workflows_plot_quality_assurance.py:
