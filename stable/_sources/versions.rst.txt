@@ -1,0 +1,12 @@
+.. _versions:
+
+========
+Versions
+========
+
+Web-based documentation is available for versions listed below:
+
+
+* `dev documentation <https://nasironeeb.github.io/brainprep/dev>`_
+
+* `stable documentation <https://nasironeeb.github.io/brainprep/stable>`_
