@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:25.454** total execution time for 10 files **from all galleries**:
+**00:38.590** total execution time for 10 files **from all galleries**:
 
 .. container::
 
@@ -33,32 +33,32 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_workflows_plot_quality_assurance.py` (``../examples/workflows/plot_quality_assurance.py``)
-     - 00:15.931
-     - 615.2
+     - 00:23.047
+     - 647.8
    * - :ref:`sphx_glr_auto_examples_workflows_plot_sbm.py` (``../examples/workflows/plot_sbm.py``)
-     - 00:03.944
-     - 113.2
-   * - :ref:`sphx_glr_auto_examples_workflows_plot_quasiraw.py` (``../examples/workflows/plot_quasiraw.py``)
-     - 00:01.397
-     - 154.4
-   * - :ref:`sphx_glr_auto_examples_tutorials_plot_iqms.py` (``../examples/tutorials/plot_iqms.py``)
-     - 00:01.221
-     - 129.4
+     - 00:06.344
+     - 131.1
    * - :ref:`sphx_glr_auto_examples_workflows_plot_defacing.py` (``../examples/workflows/plot_defacing.py``)
-     - 00:00.715
-     - 142.4
-   * - :ref:`sphx_glr_auto_examples_workflows_plot_vbm.py` (``../examples/workflows/plot_vbm.py``)
-     - 00:00.530
-     - 113.2
-   * - :ref:`sphx_glr_auto_examples_workflows_plot_fmriprep.py` (``../examples/workflows/plot_fmriprep.py``)
-     - 00:00.508
-     - 113.2
-   * - :ref:`sphx_glr_auto_examples_workflows_plot_sulcirec.py` (``../examples/workflows/plot_sulcirec.py``)
-     - 00:00.439
-     - 113.2
+     - 00:05.388
+     - 153.4
+   * - :ref:`sphx_glr_auto_examples_tutorials_plot_iqms.py` (``../examples/tutorials/plot_iqms.py``)
+     - 00:00.901
+     - 129.7
    * - :ref:`sphx_glr_auto_examples_tools_plot_html_reporting.py` (``../examples/tools/plot_html_reporting.py``)
-     - 00:00.420
-     - 114.5
+     - 00:00.785
+     - 114.0
+   * - :ref:`sphx_glr_auto_examples_workflows_plot_quasiraw.py` (``../examples/workflows/plot_quasiraw.py``)
+     - 00:00.578
+     - 111.0
+   * - :ref:`sphx_glr_auto_examples_workflows_plot_vbm.py` (``../examples/workflows/plot_vbm.py``)
+     - 00:00.452
+     - 111.0
+   * - :ref:`sphx_glr_auto_examples_workflows_plot_fmriprep.py` (``../examples/workflows/plot_fmriprep.py``)
+     - 00:00.430
+     - 111.0
+   * - :ref:`sphx_glr_auto_examples_workflows_plot_sulcirec.py` (``../examples/workflows/plot_sulcirec.py``)
+     - 00:00.356
+     - 111.0
    * - :ref:`sphx_glr_auto_examples_tools_plot_rst_reporting.py` (``../examples/tools/plot_rst_reporting.py``)
-     - 00:00.350
-     - 114.1
+     - 00:00.308
+     - 111.7

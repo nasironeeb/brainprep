@@ -144,12 +144,12 @@ Now let's generate the RST report.
           val: 1
         )
         runtime: Bunch(
-          start: '2026-05-13 07:57:14.176666'
-          end: '2026-05-13 07:57:14.176691'
+          start: '2026-10-02 07:12:46.208833'
+          end: '2026-10-02 07:12:46.208858'
           execution_time: 6.944444444444445e-09
-          brainprep_version: '2.1.0.dev'
-          platform: 'Linux-6.17.0-1010-azure-x86_64-with-glibc2.39'
-          hostname: 'runnervmeorf1'
+          brainprep_version: '2.1.0'
+          platform: 'Linux-6.17.0-1022-azure-x86_64-with-glibc2.39'
+          hostname: 'runnervm8df0l'
         )
         config: Bunch(
           verbose: True
@@ -181,12 +181,12 @@ Now let's generate the RST report.
           val: 4
         )
         runtime: Bunch(
-          start: '2026-05-13 07:57:14.184183'
-          end: '2026-05-13 07:57:14.187755'
-          execution_time: 9.922222222222222e-07
-          brainprep_version: '2.1.0.dev'
-          platform: 'Linux-6.17.0-1010-azure-x86_64-with-glibc2.39'
-          hostname: 'runnervmeorf1'
+          start: '2026-10-02 07:12:46.214585'
+          end: '2026-10-02 07:12:46.217463'
+          execution_time: 7.994444444444444e-07
+          brainprep_version: '2.1.0'
+          platform: 'Linux-6.17.0-1022-azure-x86_64-with-glibc2.39'
+          hostname: 'runnervm8df0l'
         )
         config: Bunch(
           verbose: True
@@ -212,12 +212,12 @@ Now let's generate the RST report.
           val2: 4
         )
         runtime: Bunch(
-          start: '2026-05-13 07:57:14.187712'
-          end: '2026-05-13 07:57:14.187721'
-          execution_time: 2.5e-09
-          brainprep_version: '2.1.0.dev'
-          platform: 'Linux-6.17.0-1010-azure-x86_64-with-glibc2.39'
-          hostname: 'runnervmeorf1'
+          start: '2026-10-02 07:12:46.217414'
+          end: '2026-10-02 07:12:46.217427'
+          execution_time: 3.611111111111111e-09
+          brainprep_version: '2.1.0'
+          platform: 'Linux-6.17.0-1022-azure-x86_64-with-glibc2.39'
+          hostname: 'runnervm8df0l'
         )
         config: Bunch(
           verbose: True
@@ -241,9 +241,9 @@ Now let's generate the RST report.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.350 seconds)
+   **Total running time of the script:** (0 minutes 0.308 seconds)
 
-**Estimated memory usage:**  114 MB
+**Estimated memory usage:**  112 MB
 
 
 .. _sphx_glr_download_auto_examples_tools_plot_rst_reporting.py:
