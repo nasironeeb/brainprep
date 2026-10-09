@@ -1,0 +1,21 @@
+﻿:orphan:
+
+.. note::
+
+   This page is a reference documentation. It only explains the
+   function signature, and not how to use it. Please refer to the
+   :ref:`user guide <user_guide>` for the big picture.
+
+
+brainprep.utils.utils.select_defaced_t1w
+========================================
+
+.. currentmodule:: brainprep.utils.utils
+
+.. autofunction:: select_defaced_t1w
+
+.. include:: brainprep.utils.utils.select_defaced_t1w.examples
+
+.. raw:: html
+
+    <div style='clear:both'></div>

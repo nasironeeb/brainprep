@@ -18,15 +18,18 @@ Functions
    :toctree: generated/
    :template: function.rst
 
+    bids_basename
     bvecbval_from_file
     check_run_fn
     coerce_to_list
     coerce_to_path
     find_first_occurrence
     find_stack_level
+    input_t1w_runs
     make_run_id
     parse_bids_keys
     sbref_from_file
+    select_defaced_t1w
     sidecar_from_file
 
 

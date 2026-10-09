@@ -555,15 +555,18 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../modules/brainprep.utils.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">brainprep.utils.utils</span></code>: Module that contains some utility functions.</a><input class="toctree-checkbox" id="toctree-checkbox-38" name="toctree-checkbox-38" role="switch" type="checkbox"/><label for="toctree-checkbox-38"><div class="visually-hidden">Toggle navigation of brainprep.utils.utils: Module that contains some utility functions.</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules/generated/brainprep.utils.utils.bids_basename.html">brainprep.utils.utils.bids_basename</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../modules/generated/brainprep.utils.utils.bvecbval_from_file.html">brainprep.utils.utils.bvecbval_from_file</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../modules/generated/brainprep.utils.utils.check_run_fn.html">brainprep.utils.utils.check_run_fn</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../modules/generated/brainprep.utils.utils.coerce_to_list.html">brainprep.utils.utils.coerce_to_list</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../modules/generated/brainprep.utils.utils.coerce_to_path.html">brainprep.utils.utils.coerce_to_path</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../modules/generated/brainprep.utils.utils.find_first_occurrence.html">brainprep.utils.utils.find_first_occurrence</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../modules/generated/brainprep.utils.utils.find_stack_level.html">brainprep.utils.utils.find_stack_level</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules/generated/brainprep.utils.utils.input_t1w_runs.html">brainprep.utils.utils.input_t1w_runs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../modules/generated/brainprep.utils.utils.make_run_id.html">brainprep.utils.utils.make_run_id</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../modules/generated/brainprep.utils.utils.parse_bids_keys.html">brainprep.utils.utils.parse_bids_keys</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../modules/generated/brainprep.utils.utils.sbref_from_file.html">brainprep.utils.utils.sbref_from_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules/generated/brainprep.utils.utils.select_defaced_t1w.html">brainprep.utils.utils.select_defaced_t1w</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../modules/generated/brainprep.utils.utils.sidecar_from_file.html">brainprep.utils.utils.sidecar_from_file</a></li>
 </ul>
 </li>
@@ -865,12 +868,12 @@ at/folds/3.1/sub-01_ses-00_run-28236_hemi-R.arg
 /tmp/brainprep-sulcirec/derivatives/sulcirec/subjects/sub-01/ses-00/run-28236/qc
 .tsv
 __________________________________________________________________0.00s, 0.00min
-__________________________________________________________________0.02s, 0.00min
+__________________________________________________________________0.01s, 0.00min
 [info] - cleaning workspace directory:
 /tmp/brainprep-sulcirec/derivatives/sulcirec/subjects/sub-01/ses-00/workspace_28
 236
 [title] - Subject Level Sulci Reconstruction done.
-__________________________________________________________________0.03s, 0.00min
+__________________________________________________________________0.02s, 0.00min
 Bunch(
   step1: Bunch(
     module: 'brainprep.workflow.sulcirec.brainprep_sulcirec'
@@ -886,9 +889,9 @@ Bunch(
       qc_file: PosixPath('/tmp/brainprep-sulcirec/derivatives/sulcirec/subjects/sub-01/ses-00/run-28236/qc.tsv')
     )
     runtime: Bunch(
-      start: '2026-10-09 13:14:44.569033'
-      end: '2026-10-09 13:14:44.595664'
-      execution_time: 7.3975e-06
+      start: '2026-10-09 15:56:35.548526'
+      end: '2026-10-09 15:56:35.570382'
+      execution_time: 6.071111111111112e-06
       brainprep_version: '2.2.0.dev'
       platform: 'Linux-6.17.0-1022-azure-x86_64-with-glibc2.39'
       hostname: 'runnervmmprz5'
@@ -921,9 +924,9 @@ Bunch(
       outputs: ([PosixPath('/tmp/brainprep-sulcirec/derivatives/sulcirec/subjects/sub-01/ses-00/run-28236/anat/folds/3.1/sub-01_ses-00_run-28236_hemi-L.arg'), PosixPath('/tmp/brainprep-sulcirec/derivatives/sulcirec/subjects/sub-01/ses-00/run-28236/anat/folds/3.1/sub-01_ses-00_run-28236_hemi-R.arg')], PosixPath('/tmp/brainprep-sulcirec/derivatives/sulcirec/subjects/sub-01/ses-00/run-28236/qc.tsv'))
     )
     runtime: Bunch(
-      start: '2026-10-09 13:14:44.575950'
-      end: '2026-10-09 13:14:44.594703'
-      execution_time: 5.209166666666667e-06
+      start: '2026-10-09 15:56:35.554338'
+      end: '2026-10-09 15:56:35.569399'
+      execution_time: 4.183611111111111e-06
       brainprep_version: '2.2.0.dev'
       platform: 'Linux-6.17.0-1022-azure-x86_64-with-glibc2.39'
       hostname: 'runnervmmprz5'
@@ -956,9 +959,9 @@ Bunch(
       outputs: ['morphologist-wrapper', '/tmp/brainprep-data/rawdata/sub-01/ses-00/anat/sub-01_ses-00_T1w.nii.gz', '/tmp/brainprep-sulcirec/derivatives/sulcirec/subjects/sub-01/ses-00/workspace_28236', '--subject', '01']
     )
     runtime: Bunch(
-      start: '2026-10-09 13:14:44.582901'
-      end: '2026-10-09 13:14:44.586078'
-      execution_time: 8.825e-07
+      start: '2026-10-09 15:56:35.559706'
+      end: '2026-10-09 15:56:35.562332'
+      execution_time: 7.294444444444444e-07
       brainprep_version: '2.2.0.dev'
       platform: 'Linux-6.17.0-1022-azure-x86_64-with-glibc2.39'
       hostname: 'runnervmmprz5'
@@ -991,9 +994,9 @@ Bunch(
       outputs: ([PosixPath('/tmp/brainprep-sulcirec/derivatives/sulcirec/subjects/sub-01/ses-00/run-28236/anat/folds/3.1/sub-01_ses-00_run-28236_hemi-L.arg'), PosixPath('/tmp/brainprep-sulcirec/derivatives/sulcirec/subjects/sub-01/ses-00/run-28236/anat/folds/3.1/sub-01_ses-00_run-28236_hemi-R.arg')], PosixPath('/tmp/brainprep-sulcirec/derivatives/sulcirec/subjects/sub-01/ses-00/run-28236/qc.tsv'))
     )
     runtime: Bunch(
-      start: '2026-10-09 13:14:44.590464'
-      end: '2026-10-09 13:14:44.592853'
-      execution_time: 6.636111111111111e-07
+      start: '2026-10-09 15:56:35.565727'
+      end: '2026-10-09 15:56:35.567809'
+      execution_time: 5.783333333333333e-07
       brainprep_version: '2.2.0.dev'
       platform: 'Linux-6.17.0-1022-azure-x86_64-with-glibc2.39'
       hostname: 'runnervmmprz5'
@@ -1116,7 +1119,7 @@ In practice, this means that once the CLI has produced the appropriate
 instructions, you can simply copy and run them inside the container to
 achieve the intended results. You can find the BrainPrep images on Docker
 Hub: <a class="reference external" href="https://hub.docker.com/u/neurospin">Neurospin Docker Hub</a>.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.360 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.303 seconds)</p>
 <p><strong>Estimated memory usage:</strong>  111 MB</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-workflows-plot-sulcirec-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">

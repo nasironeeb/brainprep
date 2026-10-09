@@ -9,7 +9,7 @@
 <meta property="og:site_name" content="brainprep" />
 <meta property="og:image" content="https:/github.com.github.io/nasironeeb/_static/brainprep-logo.png" />
 <meta property="og:image:alt" content="brainprep" />
-<link rel="search" title="Search" href="../../search.html" /><link rel="next" title="brainprep.utils.utils.sidecar_from_file" href="brainprep.utils.utils.sidecar_from_file.html" /><link rel="prev" title="brainprep.utils.utils.parse_bids_keys" href="brainprep.utils.utils.parse_bids_keys.html" />
+<link rel="search" title="Search" href="../../search.html" /><link rel="next" title="brainprep.utils.utils.select_defaced_t1w" href="brainprep.utils.utils.select_defaced_t1w.html" /><link rel="prev" title="brainprep.utils.utils.parse_bids_keys" href="brainprep.utils.utils.parse_bids_keys.html" />
         <link rel="prefetch" href="../../_static/brainprep-transparent.png" as="image" />
 
     <link rel="shortcut icon" href="../../_static/favicon.ico"/><!-- Generated with Sphinx 7.2.6 and Furo 2025.07.19 -->
@@ -553,15 +553,18 @@
 </ul>
 </li>
 <li class="toctree-l2 current has-children"><a class="reference internal" href="../brainprep.utils.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">brainprep.utils.utils</span></code>: Module that contains some utility functions.</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-38" name="toctree-checkbox-38" role="switch" type="checkbox"/><label for="toctree-checkbox-38"><div class="visually-hidden">Toggle navigation of brainprep.utils.utils: Module that contains some utility functions.</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.bids_basename.html">brainprep.utils.utils.bids_basename</a></li>
 <li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.bvecbval_from_file.html">brainprep.utils.utils.bvecbval_from_file</a></li>
 <li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.check_run_fn.html">brainprep.utils.utils.check_run_fn</a></li>
 <li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.coerce_to_list.html">brainprep.utils.utils.coerce_to_list</a></li>
 <li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.coerce_to_path.html">brainprep.utils.utils.coerce_to_path</a></li>
 <li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.find_first_occurrence.html">brainprep.utils.utils.find_first_occurrence</a></li>
 <li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.find_stack_level.html">brainprep.utils.utils.find_stack_level</a></li>
+<li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.input_t1w_runs.html">brainprep.utils.utils.input_t1w_runs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.make_run_id.html">brainprep.utils.utils.make_run_id</a></li>
 <li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.parse_bids_keys.html">brainprep.utils.utils.parse_bids_keys</a></li>
 <li class="toctree-l3 current current-page"><a class="current reference internal" href="#">brainprep.utils.utils.sbref_from_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.select_defaced_t1w.html">brainprep.utils.utils.select_defaced_t1w</a></li>
 <li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.sidecar_from_file.html">brainprep.utils.utils.sidecar_from_file</a></li>
 </ul>
 </li>
@@ -705,7 +708,7 @@ function signature, and not how to use it. Please refer to the
 <h1>brainprep.utils.utils.sbref_from_file<a class="headerlink" href="#brainprep-utils-utils-sbref-from-file" title="Link to this heading">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="brainprep.utils.utils.sbref_from_file">
-<span class="sig-prename descclassname"><span class="pre">brainprep.utils.utils.</span></span><span class="sig-name descname"><span class="pre">sbref_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_file</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/nasironeeb/brainprep/blob/b947502/brainprep/utils/utils.py#L374"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#brainprep.utils.utils.sbref_from_file" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">brainprep.utils.utils.</span></span><span class="sig-name descname"><span class="pre">sbref_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_file</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/nasironeeb/brainprep/blob/027b721/brainprep/utils/utils.py#L406"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#brainprep.utils.utils.sbref_from_file" title="Link to this definition">¶</a></dt>
 <dd><p>Infers the corresponding SBREFr file for a given BOLD NIfTI image file.</p>
 <p>This function checks that the input file has a <code class="docutils literal notranslate"><span class="pre">.nii.gz</span></code> extension and
 attempts to locate a SBREF <code class="docutils literal notranslate"><span class="pre">_sbref</span></code> file with the same base name. None is
@@ -751,12 +754,12 @@ returned if no SBREF file is found.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="brainprep.utils.utils.sidecar_from_file.html">
+          <a class="next-page" href="brainprep.utils.utils.select_defaced_t1w.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">brainprep.utils.utils.sidecar_from_file</div>
+                <div class="title">brainprep.utils.utils.select_defaced_t1w</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>

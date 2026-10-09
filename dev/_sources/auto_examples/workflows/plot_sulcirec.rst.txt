@@ -217,12 +217,12 @@ to actually run each step and generate results on disk.
     /tmp/brainprep-sulcirec/derivatives/sulcirec/subjects/sub-01/ses-00/run-28236/qc
     .tsv
     __________________________________________________________________0.00s, 0.00min
-    __________________________________________________________________0.02s, 0.00min
+    __________________________________________________________________0.01s, 0.00min
     [info] - cleaning workspace directory: 
     /tmp/brainprep-sulcirec/derivatives/sulcirec/subjects/sub-01/ses-00/workspace_28
     236
     [title] - Subject Level Sulci Reconstruction done.
-    __________________________________________________________________0.03s, 0.00min
+    __________________________________________________________________0.02s, 0.00min
     Bunch(
       step1: Bunch(
         module: 'brainprep.workflow.sulcirec.brainprep_sulcirec'
@@ -238,9 +238,9 @@ to actually run each step and generate results on disk.
           qc_file: PosixPath('/tmp/brainprep-sulcirec/derivatives/sulcirec/subjects/sub-01/ses-00/run-28236/qc.tsv')
         )
         runtime: Bunch(
-          start: '2026-10-09 13:14:44.569033'
-          end: '2026-10-09 13:14:44.595664'
-          execution_time: 7.3975e-06
+          start: '2026-10-09 15:56:35.548526'
+          end: '2026-10-09 15:56:35.570382'
+          execution_time: 6.071111111111112e-06
           brainprep_version: '2.2.0.dev'
           platform: 'Linux-6.17.0-1022-azure-x86_64-with-glibc2.39'
           hostname: 'runnervmmprz5'
@@ -273,9 +273,9 @@ to actually run each step and generate results on disk.
           outputs: ([PosixPath('/tmp/brainprep-sulcirec/derivatives/sulcirec/subjects/sub-01/ses-00/run-28236/anat/folds/3.1/sub-01_ses-00_run-28236_hemi-L.arg'), PosixPath('/tmp/brainprep-sulcirec/derivatives/sulcirec/subjects/sub-01/ses-00/run-28236/anat/folds/3.1/sub-01_ses-00_run-28236_hemi-R.arg')], PosixPath('/tmp/brainprep-sulcirec/derivatives/sulcirec/subjects/sub-01/ses-00/run-28236/qc.tsv'))
         )
         runtime: Bunch(
-          start: '2026-10-09 13:14:44.575950'
-          end: '2026-10-09 13:14:44.594703'
-          execution_time: 5.209166666666667e-06
+          start: '2026-10-09 15:56:35.554338'
+          end: '2026-10-09 15:56:35.569399'
+          execution_time: 4.183611111111111e-06
           brainprep_version: '2.2.0.dev'
           platform: 'Linux-6.17.0-1022-azure-x86_64-with-glibc2.39'
           hostname: 'runnervmmprz5'
@@ -308,9 +308,9 @@ to actually run each step and generate results on disk.
           outputs: ['morphologist-wrapper', '/tmp/brainprep-data/rawdata/sub-01/ses-00/anat/sub-01_ses-00_T1w.nii.gz', '/tmp/brainprep-sulcirec/derivatives/sulcirec/subjects/sub-01/ses-00/workspace_28236', '--subject', '01']
         )
         runtime: Bunch(
-          start: '2026-10-09 13:14:44.582901'
-          end: '2026-10-09 13:14:44.586078'
-          execution_time: 8.825e-07
+          start: '2026-10-09 15:56:35.559706'
+          end: '2026-10-09 15:56:35.562332'
+          execution_time: 7.294444444444444e-07
           brainprep_version: '2.2.0.dev'
           platform: 'Linux-6.17.0-1022-azure-x86_64-with-glibc2.39'
           hostname: 'runnervmmprz5'
@@ -343,9 +343,9 @@ to actually run each step and generate results on disk.
           outputs: ([PosixPath('/tmp/brainprep-sulcirec/derivatives/sulcirec/subjects/sub-01/ses-00/run-28236/anat/folds/3.1/sub-01_ses-00_run-28236_hemi-L.arg'), PosixPath('/tmp/brainprep-sulcirec/derivatives/sulcirec/subjects/sub-01/ses-00/run-28236/anat/folds/3.1/sub-01_ses-00_run-28236_hemi-R.arg')], PosixPath('/tmp/brainprep-sulcirec/derivatives/sulcirec/subjects/sub-01/ses-00/run-28236/qc.tsv'))
         )
         runtime: Bunch(
-          start: '2026-10-09 13:14:44.590464'
-          end: '2026-10-09 13:14:44.592853'
-          execution_time: 6.636111111111111e-07
+          start: '2026-10-09 15:56:35.565727'
+          end: '2026-10-09 15:56:35.567809'
+          execution_time: 5.783333333333333e-07
           brainprep_version: '2.2.0.dev'
           platform: 'Linux-6.17.0-1022-azure-x86_64-with-glibc2.39'
           hostname: 'runnervmmprz5'
@@ -494,7 +494,7 @@ Hub: `Neurospin Docker Hub <https://hub.docker.com/u/neurospin>`_.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.360 seconds)
+   **Total running time of the script:** (0 minutes 0.303 seconds)
 
 **Estimated memory usage:**  111 MB
 

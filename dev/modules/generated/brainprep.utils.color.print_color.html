@@ -553,15 +553,18 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../brainprep.utils.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">brainprep.utils.utils</span></code>: Module that contains some utility functions.</a><input class="toctree-checkbox" id="toctree-checkbox-38" name="toctree-checkbox-38" role="switch" type="checkbox"/><label for="toctree-checkbox-38"><div class="visually-hidden">Toggle navigation of brainprep.utils.utils: Module that contains some utility functions.</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.bids_basename.html">brainprep.utils.utils.bids_basename</a></li>
 <li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.bvecbval_from_file.html">brainprep.utils.utils.bvecbval_from_file</a></li>
 <li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.check_run_fn.html">brainprep.utils.utils.check_run_fn</a></li>
 <li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.coerce_to_list.html">brainprep.utils.utils.coerce_to_list</a></li>
 <li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.coerce_to_path.html">brainprep.utils.utils.coerce_to_path</a></li>
 <li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.find_first_occurrence.html">brainprep.utils.utils.find_first_occurrence</a></li>
 <li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.find_stack_level.html">brainprep.utils.utils.find_stack_level</a></li>
+<li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.input_t1w_runs.html">brainprep.utils.utils.input_t1w_runs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.make_run_id.html">brainprep.utils.utils.make_run_id</a></li>
 <li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.parse_bids_keys.html">brainprep.utils.utils.parse_bids_keys</a></li>
 <li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.sbref_from_file.html">brainprep.utils.utils.sbref_from_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.select_defaced_t1w.html">brainprep.utils.utils.select_defaced_t1w</a></li>
 <li class="toctree-l3"><a class="reference internal" href="brainprep.utils.utils.sidecar_from_file.html">brainprep.utils.utils.sidecar_from_file</a></li>
 </ul>
 </li>
@@ -705,7 +708,7 @@ function signature, and not how to use it. Please refer to the
 <h1>brainprep.utils.color.print_color<a class="headerlink" href="#brainprep-utils-color-print-color" title="Link to this heading">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="brainprep.utils.color.print_color">
-<span class="sig-prename descclassname"><span class="pre">brainprep.utils.color.</span></span><span class="sig-name descname"><span class="pre">print_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\n'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/nasironeeb/brainprep/blob/b947502/brainprep/utils/color.py#L82"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#brainprep.utils.color.print_color" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">brainprep.utils.color.</span></span><span class="sig-name descname"><span class="pre">print_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\n'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/nasironeeb/brainprep/blob/027b721/brainprep/utils/color.py#L82"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#brainprep.utils.color.print_color" title="Link to this definition">¶</a></dt>
 <dd><p>Print a message to the console using a given color.</p>
 <p>The output style depends on the global brainprep options:</p>
 <ul class="simple">
