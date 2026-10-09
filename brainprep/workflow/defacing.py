@@ -28,8 +28,10 @@ from ..typing import (
     File,
 )
 from ..utils import (
+    bids_basename,
     Bunch,
     print_info,
+    select_defaced_t1w,
 )
 
 
@@ -186,22 +188,9 @@ def brainprep_defacing(
             interpolation="spline",
         )
     else:
-        t1_file = list(
-            output_dir.glob(
-                f"sub-{entities['sub']}_ses-{entities['ses']}_run-*_T1w.nii.gz"
-            )
+        t1_file, mask_t1_file = select_defaced_t1w(
+            output_dir, entities, anatomical_file
         )
-        mask_t1_file = list(
-            output_dir.glob(
-                f"sub-{entities['sub']}_ses-{entities['ses']}_run-*_mod-T1w_"
-                "defacemask.nii.gz"
-            )
-        )
-        if len(t1_file) != 1 or len(mask_t1_file) != 1:
-            raise ValueError(
-                f"No T1w defaced image found: {t1_file}, {mask_t1_file}"
-            )
-        t1_file, mask_t1_file = t1_file[0], mask_t1_file[0]
         print_info(f"using T1w: {t1_file}")
         print_info(f"using defacing mask: {mask_t1_file}")
         aligned_anatomical_file = reoriented_anatomical_file

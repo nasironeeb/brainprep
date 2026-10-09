@@ -33,6 +33,38 @@ from .color import (
     print_warn,
 )
 
+def bids_basename(
+    entities: dict[str],
+) -> str:
+    """
+    Build a BIDS-like file basename from parsed BIDS entities.
+
+    The recognized entities are kept in canonical BIDS order, so that
+    input files differing only by entities such as ``acq`` or ``rec``
+    yield distinct derivative names. The ``mod`` and ``modality`` keys
+    are ignored: the modality is handled by the callers through the
+    file suffix.
+
+    Parameters
+    ----------
+    entities : dict[str]
+        A dictionary of parsed BIDS entities, as returned by
+        :func:`parse_bids_keys`.
+
+    Returns
+    -------
+    basename : str
+        The BIDS-like basename, e.g. ``sub-01_ses-M00_acq-3DT1_run-01``.
+    """
+    order = (
+        "sub", "ses", "task", "acq", "ce", "rec", "dir",
+        "echo", "part", "run", "space", "res", "recording",
+    )
+    return "_".join(
+        f"{key}-{entities[key]}"
+        for key in order
+        if key in entities and entities[key] != ""
+    )
 
 def coerce_to_list(
         value: Any,
@@ -566,3 +598,122 @@ def find_first_occurrence(
     raise ValueError(
         f"Unable to find target '{target}' in parents of {input_file}"
     )
+
+def input_t1w_runs(
+        anatomical_file: File,
+        sub: str,
+        ses: str,
+        acq: str | None,
+    ) -> set[str]:
+    """
+    Collect the run identifiers of the T1w inputs matching an acquisition.
+
+    The sibling T1w images of the input session are parsed so that their
+    run identifier can be recovered, including the deterministic one
+    generated when the file name carries no ``run`` entity.
+
+    Parameters
+    ----------
+    anatomical_file : File
+        Path to the input image whose sibling T1w images are inspected.
+    sub : str
+        Subject identifier.
+    ses : str
+        Session identifier.
+    acq : str | None
+        Acquisition identifier to match, or None to keep every T1w.
+
+    Returns
+    -------
+    runs : set[str]
+        The matching run identifiers.
+    """
+    runs = set()
+    for t1_file in anatomical_file.parent.glob(
+        f"sub-{sub}_ses-{ses}*_T1w.nii.gz"
+    ):
+        t1_entities = parse_bids_keys(t1_file)
+        if acq is None or t1_entities.get("acq") == acq:
+            runs.add(t1_entities["run"])
+    return runs
+
+def select_defaced_t1w(
+        output_dir: Directory,
+        entities: dict,
+        anatomical_file: File,
+    ) -> tuple[File, File]:
+    """
+    Select the defaced T1w image used to deface a T2w or FLAIR image.
+
+    Every candidate image is paired with its defacing mask. When the
+    input carries an ``acq`` entity, candidates are first restricted to
+    the same acquisition (from the output names), then, for derivatives
+    named without ``acq``, to the run identifiers of the matching T1w
+    inputs. When several candidates remain, the first one in
+    alphabetical order is used and a warning is displayed.
+
+    Parameters
+    ----------
+    output_dir : Directory
+        Session output directory containing the defaced T1w outputs.
+    entities : dict
+        Parsed BIDS entities of the T2w/FLAIR input image.
+    anatomical_file : File
+        Path to the T2w/FLAIR input image, used to inspect the sibling
+        T1w inputs of the same session.
+
+    Returns
+    -------
+    t1_file : File
+        Path to the selected defaced T1w image.
+    mask_file : File
+        Path to the associated defacing mask.
+
+    Raises
+    ------
+    ValueError
+        If no defaced T1w image is available in the session.
+    """
+    sub = entities["sub"]
+    ses = entities["ses"]
+    acq = entities.get("acq")
+    candidates = []
+    for t1_file in sorted(
+        output_dir.glob(f"sub-{sub}_ses-{ses}*_T1w.nii.gz")
+    ):
+        mask_file = t1_file.with_name(
+            t1_file.name.removesuffix("_T1w.nii.gz")
+            + "_mod-T1w_defacemask.nii.gz"
+        )
+        if mask_file.is_file():
+            candidates.append((t1_file, mask_file))
+    if not candidates:
+        raise ValueError(
+            f"No defaced T1w image found in {output_dir}: the T1w "
+            f"image of sub-{sub}_ses-{ses} must be defaced first."
+        )
+    matched = list(candidates)
+    if acq is not None and len(matched) > 1:
+        by_acq = [
+            item for item in matched
+            if f"_acq-{acq}_" in item[0].name
+        ]
+        if by_acq:
+            matched = by_acq
+        else:
+            runs = input_t1w_runs(anatomical_file, sub, ses, acq)
+            by_run = [
+                item for item in matched
+                if any(f"_run-{run}_" in item[0].name for run in runs)
+            ]
+            if by_run:
+                matched = by_run
+    if len(matched) > 1:
+        acq_part = f"_acq-{acq}" if acq is not None else ""
+        print_warn(
+            f"Several defaced T1w images found for "
+            f"sub-{sub}_ses-{ses}{acq_part}: "
+            f"{[item[0].name for item in matched]}; using "
+            f"{matched[0][0].name}."
+        )
+    return matched[0]
