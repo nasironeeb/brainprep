@@ -181,6 +181,7 @@ to actually run each step and generate results on disk.
         output_dir=PosixPath('/tmp/brainprep-defacing/derivatives/defacing/subjects/
     sub-01/ses-01'),
         keep_intermediate=True,
+        t1_run=None,
         kwargs={'entities': {'sub': '01', 'modality': 'T1w', 'mod': 'T1w', 'ses': 
     '01', 'run': '34706'}},
     )
@@ -524,6 +525,7 @@ to actually run each step and generate results on disk.
         output_dir=PosixPath('/tmp/brainprep-defacing/derivatives/defacing/subjects/
     sub-02/ses-01'),
         keep_intermediate=True,
+        t1_run=None,
         kwargs={'entities': {'sub': '02', 'modality': 'T1w', 'mod': 'T1w', 'ses': 
     '01', 'run': '21669'}},
     )
@@ -978,6 +980,7 @@ to actually run each step and generate results on disk.
         output_dir=PosixPath('/tmp/brainprep-defacing/derivatives/defacing/subjects/
     sub-01/ses-01'),
         keep_intermediate=True,
+        t1_run=None,
         kwargs={'entities': {'sub': '01', 'modality': 'T2w', 'mod': 'T2w', 'ses': 
     '01', 'run': '17909'}},
     )
@@ -1364,6 +1367,7 @@ to actually run each step and generate results on disk.
         output_dir=PosixPath('/tmp/brainprep-defacing/derivatives/defacing/subjects/
     sub-02/ses-01'),
         keep_intermediate=True,
+        t1_run=None,
         kwargs={'entities': {'sub': '02', 'modality': 'T2w', 'mod': 'T2w', 'ses': 
     '01', 'run': '32679'}},
     )
@@ -1861,6 +1865,7 @@ to actually run each step and generate results on disk.
         output_dir=PosixPath('/tmp/brainprep-defacing/derivatives/defacing/subjects/
     sub-01/ses-01'),
         keep_intermediate=True,
+        t1_run=None,
         kwargs={'entities': {'sub': '01', 'modality': 'FLAIR', 'mod': 'FLAIR', 
     'ses': '01', 'run': '16566'}},
     )
@@ -2251,6 +2256,7 @@ to actually run each step and generate results on disk.
         output_dir=PosixPath('/tmp/brainprep-defacing/derivatives/defacing/subjects/
     sub-02/ses-01'),
         keep_intermediate=True,
+        t1_run=None,
         kwargs={'entities': {'sub': '02', 'modality': 'FLAIR', 'mod': 'FLAIR', 
     'ses': '01', 'run': '24276'}},
     )
@@ -2892,9 +2898,9 @@ Hub: `Neurospin Docker Hub <https://hub.docker.com/u/neurospin>`_.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.760 seconds)
+   **Total running time of the script:** (0 minutes 4.785 seconds)
 
-**Estimated memory usage:**  154 MB
+**Estimated memory usage:**  160 MB
 
 
 .. _sphx_glr_download_auto_examples_workflows_plot_defacing.py:
