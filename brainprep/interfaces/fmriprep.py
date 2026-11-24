@@ -209,7 +209,7 @@ def fmriprep_workflow(
                 f"{basename}_space-{template}_desc-brain_mask.nii.gz"
             )
             for template in ("T1w",
-                             "MNI152NLin2009cAsym")
+                             "MNI152NLin2009cAsym_res-2")
         ]
         fmri_image_files = [
             (
@@ -218,7 +218,7 @@ def fmriprep_workflow(
                 f"{basename}_space-{template}_desc-preproc_bold.nii.gz"
             )
             for template in ("T1w",
-                             "MNI152NLin2009cAsym")
+                             "MNI152NLin2009cAsym_res-2")
         ]
         fmri_surf_files = [
             (
